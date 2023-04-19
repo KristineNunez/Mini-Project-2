@@ -28,17 +28,24 @@ const App = () => {
     const formData = new FormData(form);
     const formData_entries = formData.entries();
 
-    const party = formData_entries.next().value[1];
-    const deposit = formData_entries.next().value[1];
+    try {
+      const party = formData_entries.next().value[1];
+      const deposit = formData_entries.next().value[1];
 
-    if(party == "Owner"){
-      await addBalanceOwnerOperation(deposit)
-    }
-    else{
-      await addBalanceCounterpartyOperation(deposit)
-    }
+      if(party == "Owner"){
+        await addBalanceOwnerOperation(deposit)
+      }
+      else{
+        await addBalanceCounterpartyOperation(deposit)
+      }
 
-    alert(party + " has successfully deposited funds.")
+      alert(party + " has successfully deposited funds.")
+    }
+    catch(e) {
+      if(e instanceof TypeError){
+        alert("Please select contract party.")
+      }
+    }
   };
 
   //Triggers when someone claims funds
@@ -48,17 +55,24 @@ const App = () => {
     const formData = new FormData(form);
     const formData_entries = formData.entries();
 
-    const party = formData_entries.next().value[1];
+    try {
+      const party = formData_entries.next().value[1];
 
-    if(party == "Owner"){
-      await claimOwnerOperation()
-    }
-    else{
-      const secret = formData_entries.next().value[1];
-      await claimCounterpartyOperation(secret)
-    }
+      if(party == "Owner"){
+        await claimOwnerOperation()
+      }
+      else{
+        const secret = formData_entries.next().value[1];
+        await claimCounterpartyOperation(secret)
+      }
 
-    alert(party + " has successfully claimed funds.")
+      alert(party + " has successfully claimed funds.")
+    }
+    catch(e) {
+      if(e instanceof TypeError){
+        alert("Please select contract party.")
+      }
+    }
   };
 
   //Triggers when someone wants to revert funds
@@ -68,16 +82,23 @@ const App = () => {
     const formData = new FormData(form);
     const formData_entries = formData.entries();
 
-    const party = formData_entries.next().value[1];
+    try {
+      const party = formData_entries.next().value[1];
 
-    if(party == "Owner"){
-      await revertOwnerOperation()
-    }
-    else{
-      await revertCounterpartyOperation()
-    }
+      if(party == "Owner"){
+        await revertOwnerOperation()
+      }
+      else{
+        await revertCounterpartyOperation()
+      }
 
-    alert(party + " has decided to withdraw from the contract.")
+      alert(party + " has decided to withdraw from the contract.")
+    }
+    catch(e) {
+      if(e instanceof TypeError){
+        alert("Please select contract party.")
+      }
+    }
   };
 
   //Triggers when admin authorizes withdrawal
@@ -90,7 +111,7 @@ const App = () => {
   return (
     <div className="h-100">
       <Navbar />
-      <br/><br/>
+      <br/><br/><br/><br/><br/>
       <div className="d-flex flex-column justify-content-center align-items-center h-100">
         {/*Depositing*/}
         <form onSubmit={onAddBalance}>
